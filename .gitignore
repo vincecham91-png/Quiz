@@ -1,0 +1,9 @@
+*.pyc
+__pycache__/
+*.png
+tmp_*
+*.jpeg
+*.jpg
+*.pdf
+.ai interactive/
+教師/
