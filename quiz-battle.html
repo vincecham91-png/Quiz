@@ -466,6 +466,18 @@ body {
             </div>
         </section>
 
+        <!-- API Key -->
+        <section>
+            <label class="block text-2xl font-bold mb-2">🔐 AI API Key</label>
+            <input
+                id="api-key-input"
+                type="password"
+                class="setup-input text-lg"
+                placeholder="输入 API Key（如 sk-xxx 或 ghp_xxx）"
+            />
+            <p class="text-sm opacity-60 mt-1">Key 仅保存在浏览器本地，不会上传到任何服务器</p>
+        </section>
+
         <!-- Source Text + File Upload -->
         <section>
             <div class="flex justify-between items-end mb-4">
@@ -2407,6 +2419,8 @@ async function launchBattleAI() {
     const qCount = parseInt(document.getElementById('q-count-input').value);
     let model = document.getElementById('model-select').value;
     if (!model) model = localStorage.getItem('gemini_model') || 'models/gemini-3.5-flash-lite';
+    const apiKey = localStorage.getItem('battle_api_key') || '';
+    if (!apiKey) return alert('请先在设置中输入 API Key！');
     if (!text || !model) return alert('请补全所有必填项！');
 
     config = {
@@ -2486,7 +2500,10 @@ Output ONLY valid JSON array, no markdown, no code blocks.`;
     try {
         const res = await fetch(`${WORKER_URL}/gemini`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
             body: JSON.stringify({ model, contents: [{ parts: [{ text: prompt }] }] })
         });
         const data = await res.json();
@@ -4762,7 +4779,8 @@ function saveSettings() {
             timerSeconds: document.getElementById('timer-seconds-input').value,
             answerSeconds: document.getElementById('answer-seconds-input').value,
             studentList: document.getElementById('student-list').value,
-            sourceText: document.getElementById('source-text').value
+            sourceText: document.getElementById('source-text').value,
+            apiKey: localStorage.getItem('battle_api_key') || ''
         };
         localStorage.setItem('quiz_battle_settings', JSON.stringify(s));
     } catch (e) {}
@@ -4792,6 +4810,16 @@ function loadSettings() {
         }
         validateDiffSum();
     } catch (e) {}
+
+    // Load API key separately (not stored in quiz_battle_settings for security)
+    var savedKey = localStorage.getItem('battle_api_key') || '';
+    var keyInput = document.getElementById('api-key-input');
+    if (keyInput) {
+        keyInput.value = savedKey;
+        keyInput.addEventListener('input', function() {
+            localStorage.setItem('battle_api_key', this.value);
+        });
+    }
 }
 </script>
 </html>
