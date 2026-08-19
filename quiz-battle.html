@@ -2513,8 +2513,10 @@ Output ONLY valid JSON array, no markdown, no code blocks.`;
         // 去掉 _timing 再处理，防止 parse 报错
         delete data._timing;
         const aiTxt = data.candidates[0].content.parts[0].text;
-        const match = aiTxt.match(/\[[\s\S]*\]/);
-        if (!match) throw new Error('AI format error');
+        // 移除 markdown 代码块包裹（如 ```json ... ```）
+        const cleaned = aiTxt.replace(/```json\s*/i, '').replace(/```\s*/i, '').trim();
+        const match = cleaned.match(/\[[\s\S]*\]/);
+        if (!match) throw new Error('AI format error: no JSON array found');
         scenes = JSON.parse(match[0]);
         shuffleOptions(scenes);
     } catch (e) {
