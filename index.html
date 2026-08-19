@@ -764,7 +764,7 @@ body {
 <script>
 // ============ SECTION 1: CONSTANTS, CONFIG, STATE, SOUNDS ============
 const WORKER_URL = 'https://quiz-battle-api.vincecham91.workers.dev';
-let scenes = [], students = {}, gameState = {}, customApiKey = 'worker', selectedModel = 'models/gemini-3.6-flash';
+let scenes = [], students = {}, gameState = {}, customApiKey = 'worker', selectedModel = 'models/gemini-3-flash-preview';
 let bgmOn = false, audioCtx = null, renderLoopId = null, animations = [];
 let charCache = {};
 
@@ -2419,7 +2419,7 @@ async function launchBattleAI() {
     const text = document.getElementById('source-text').value.trim();
     const qCount = parseInt(document.getElementById('q-count-input').value);
     let model = document.getElementById('model-select').value;
-    if (!model) model = localStorage.getItem('gemini_model') || 'models/gemini-3.6-flash';
+    if (!model) model = localStorage.getItem('gemini_model') || 'models/gemini-3-flash-preview';
     const apiKey = localStorage.getItem('battle_api_key') || '';
     if (!apiKey) return alert('请先在设置中输入 API Key！');
     if (!text || !model) return alert('请补全所有必填项！');
@@ -4670,7 +4670,7 @@ async function detectModels() {
         console.warn('Model detection failed', e);
         status.innerText = '⚠️ 自动连接失败，使用内置线路';
         sel.innerHTML = '';
-        ['models/gemini-3.6-flash'].forEach(function(m) {
+        ['models/gemini-3-flash-preview'].forEach(function(m) {
             var opt = document.createElement('option'); opt.value = m; opt.textContent = m.replace('models/',''); sel.appendChild(opt);
         });
         sel.selectedIndex = 0; selectedModel = sel.value; sel.style.display = 'block';
