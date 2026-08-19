@@ -1064,11 +1064,12 @@ function preloadHeroMedia(key) { /* no-op for pokemon */ }
 
 function getBattleSprite(key) {
     const img = battleSpriteCache[key];
-    return (img && img.complete && img.naturalWidth > 0) ? img : null;
+    // 直接返回（Canvas生成的DataURL立即可用）
+    return img || null;
 }
 function getPortrait(key) {
     const img = portraitCache[key];
-    return (img && img.complete && img.naturalWidth > 0) ? img : null;
+    return img || null;
 }
 
 // ============ POKEMON CANVAS DRAWING ENGINE ============
