@@ -1021,20 +1021,53 @@ const HEROES = {
     eevee:      { name:'伊布',   gender:'中性',role:'进化', emoji:'🍀', projectile:'eevee',     colors:['#D69E2E','#B7791F','#F6E05E'], introLine:'伊布伊布～接下来会进化成什么样呢？' }
 };
 
-// 立绘缓存（宝可梦角色使用程序化绘制，无需外部图片）
+// 宝可梦外部图片 URL（Agnes Image API 生成）
+const PORTRAIT_URLS = {
+    pikachu:    './assets/heroes/pikachu.png',
+    charmander: './assets/heroes/charmander.png',
+    bulbasaur:  './assets/heroes/bulbasaur.png',
+    squirtle:   './assets/heroes/squirtle.png',
+    mewtwo:     './assets/heroes/mewtwo.png',
+    alakazam:   './assets/heroes/abra.png',
+    gardevoir:  './assets/heroes/gardevoir.png',
+    dragonite:  './assets/heroes/dragonite.png',
+    snorlax:    './assets/heroes/snorlax.png',
+    lucario:    './assets/heroes/lucario.png',
+    mew:        './assets/heroes/mew.png',
+    eevee:      './assets/heroes/eevee.png',
+};
+
+// 立绘缓存
 const portraitCache = {};
 const battleSpriteCache = {};
 
 function loadHeroAssets() {
-    // 宝可梦角色使用程序化 Canvas 绘制，无需外部图片
+    // 异步加载外部图片
     Object.keys(HEROES).forEach(key => {
-        battleSpriteCache[key] = createPokemonBattleSprite(key);
-        portraitCache[key] = createPokemonPortrait(key);
+        preloadExternalImage(key);
     });
 }
 
-// 创建宝可梦战斗立绘（Canvas → Image 转换）
-function createPokemonBattleSprite(key) {
+// 预加载外部图片并缓存
+function preloadExternalImage(key) {
+    const url = PORTRAIT_URLS[key];
+    if (!url) return;
+
+    const battleImg = new Image();
+    battleImg.crossOrigin = 'anonymous';
+    battleImg.onload = () => { battleSpriteCache[key] = battleImg; };
+    battleImg.onerror = () => { battleSpriteCache[key] = createFallbackBattleSprite(key); };
+    battleImg.src = url;
+
+    const portraitImg = new Image();
+    portraitImg.crossOrigin = 'anonymous';
+    portraitImg.onload = () => { portraitCache[key] = portraitImg; };
+    portraitImg.onerror = () => { portraitCache[key] = createFallbackPortrait(key); };
+    portraitImg.src = url;
+}
+
+// Canvas 回退方案
+function createFallbackBattleSprite(key) {
     const c = document.createElement('canvas');
     c.width = 128; c.height = 160;
     const ctx = c.getContext('2d');
@@ -1044,8 +1077,7 @@ function createPokemonBattleSprite(key) {
     return img;
 }
 
-// 创建宝可梦头像（圆形裁剪）
-function createPokemonPortrait(key) {
+function createFallbackPortrait(key) {
     const c = document.createElement('canvas');
     c.width = 200; c.height = 200;
     const ctx = c.getContext('2d');
@@ -1057,6 +1089,9 @@ function createPokemonPortrait(key) {
     img.src = c.toDataURL();
     return img;
 }
+
+// 宝可梦战斗立绘和头像已通过 preloadExternalImage 加载外部图片
+// 以下为 Canvas 回退方案（图片加载失败时使用）
 
 // 宝可梦无视频/语音素材，skip loading
 const introMediaCache = {};
