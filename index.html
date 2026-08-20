@@ -1021,20 +1021,51 @@ const HEROES = {
     eevee:      { name:'伊布',   gender:'中性',role:'进化', emoji:'🍀', projectile:'eevee',     colors:['#D69E2E','#B7791F','#F6E05E'], introLine:'伊布伊布～接下来会进化成什么样呢？' }
 };
 
-// 立绘缓存（宝可梦角色使用程序化绘制，无需外部图片）
-const portraitCache = {};
-const battleSpriteCache = {};
+// 宝可梦角色使用外部生成图片（Agnes Image API）
+const PORTRAIT_URLS = {
+    pikachu:    './pikachu.png',
+    charmander: './charmander.png',
+    bulbasaur:  './bulbasaur.png',
+    squirtle:   './squirtle.png',
+    mewtwo:     './mewtwo.png',
+    alakazam:   './abra.png',
+    gardevoir:  './gardevoir.png',
+    dragonite:  './dragonite.png',
+    snorlax:    './snorlax.png',
+    lucario:    './lucario.png',
+    mew:        './mew.png',
+    eevee:      './eevee.png',
+};
 
 function loadHeroAssets() {
-    // 宝可梦角色使用程序化 Canvas 绘制，无需外部图片
+    // 异步加载外部图片，完成后缓存
     Object.keys(HEROES).forEach(key => {
-        battleSpriteCache[key] = createPokemonBattleSprite(key);
-        portraitCache[key] = createPokemonPortrait(key);
+        preloadExternalImage(key);
     });
 }
 
-// 创建宝可梦战斗立绘（Canvas → Image 转换）
-function createPokemonBattleSprite(key) {
+// 预加载外部图片并缓存
+function preloadExternalImage(key) {
+    const url = PORTRAIT_URLS[key];
+    if (!url) return;
+
+    // 加载战斗立绘 (128x160)
+    const battleImg = new Image();
+    battleImg.crossOrigin = 'anonymous';
+    battleImg.onload = () => { battleSpriteCache[key] = battleImg; };
+    battleImg.onerror = () => { battleSpriteCache[key] = createFallbackBattleSprite(key); };
+    battleImg.src = url;
+
+    // 加载头像 (圆形裁剪)
+    const portraitImg = new Image();
+    portraitImg.crossOrigin = 'anonymous';
+    portraitImg.onload = () => { portraitCache[key] = portraitImg; };
+    portraitImg.onerror = () => { portraitCache[key] = createFallbackPortrait(key); };
+    portraitImg.src = url;
+}
+
+// Canvas 回退方案（图片加载失败时使用）
+function createFallbackBattleSprite(key) {
     const c = document.createElement('canvas');
     c.width = 128; c.height = 160;
     const ctx = c.getContext('2d');
@@ -1044,8 +1075,7 @@ function createPokemonBattleSprite(key) {
     return img;
 }
 
-// 创建宝可梦头像（圆形裁剪）
-function createPokemonPortrait(key) {
+function createFallbackPortrait(key) {
     const c = document.createElement('canvas');
     c.width = 200; c.height = 200;
     const ctx = c.getContext('2d');
