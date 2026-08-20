@@ -1007,18 +1007,18 @@ function escHTML(str) {
 // ============ SECTION 2: POKEMON HEROES (动画版宝可梦) ============
 // projectile 字段路由到下方弹道绘制（8 种宝可梦专属弹道）；每个角色有自定义 colors 和 emoji
 const HEROES = {
-    pikachu:    { name:'皮卡丘', gender:'男', role:'电击', emoji:'⚡', projectile:'pikachu',  colors:['#FFD600','#F5C518','#FF6B00'], introLine:'皮卡皮卡——！' },
-    charmander: { name:'小火龙', gender:'男', role:'火焰', emoji:'🔥', projectile:'charmander',colors:['#F5C518','#E84118','#FF6B00'], introLine:'小火龙，燃烧吧！' },
-    bulbasaur:  { name:'妙蛙种子',gender:'女', role:'草系', emoji:'🌿', projectile:'bulbasaur', colors:['#68D391','#48BB78','#9F7AEA'], introLine:'妙蛙种子～种籽！' },
-    squirtle:   { name:'杰尼龟', gender:'男', role:'水系', emoji:'💧', projectile:'squirtle',  colors:['#63B3ED','#4299E1','#90CDF4'], introLine:'杰尼杰尼！' },
-    mewtwo:     { name:'超梦',   gender:'男', role:'幻兽', emoji:'🔮', projectile:'mewtwo',    colors:['#E9D8FD','#D6BCFA','#FBB6CE'], introLine:'我即是梦……超越现实的存在！' },
-    alakazam:   { name:'胡地',   gender:'男', role:'超能', emoji:'🥄', projectile:'alakazam',  colors:['#FAE1B7','#F6AD55','#ED8936'], introLine:'勺子在旋转……心在波动！' },
-    gardevoir:  { name:'沙奈朵', gender:'女', role:'妖精', emoji:'✨', projectile:'gardevoir', colors:['#FED7D7','#FEB2B2','#FC8181'], introLine:'以心灵之力，守护同伴！' },
-    dragonite:  { name:'快龙',   gender:'男', role:'龙系', emoji:'🐉', projectile:'dragonite', colors:['#FECC5B','#F6AD55','#DD6B20'], introLine:'呜呜——龙啸九天！' },
-    snorlax:    { name:'卡比兽', gender:'男', role:'重量', emoji:'💤', projectile:'snorlax',   colors:['#9F7AEA','#805AD5','#6B46C1'], introLine:'呼噜噜……让开……我要睡觉……' },
-    lucario:    { name:'路卡利欧',gender:'男', role:'波导', emoji:'🌀', projectile:'lucario', colors:['#4A5568','#2D3748','#63B3ED'], introLine:'波导之力，觉醒吧！' },
-    mew:        { name:'梦幻',   gender:'中性',role:'幻形', emoji:'🌈', projectile:'mew',       colors:['#FBB6CE','#FC8181','#ED64A6'], introLine:'我是梦幻……什么都能变身哦～' },
-    eevee:      { name:'伊布',   gender:'中性',role:'进化', emoji:'🍀', projectile:'eevee',     colors:['#D69E2E','#B7791F','#F6E05E'], introLine:'伊布伊布～接下来会进化成什么样呢？' }
+    pikachu:    { name:'皮卡丘', gender:'男', role:'电击', emoji:'⚡', projectile:'pikachu',  colors:['#FFD600','#F5C518','#FF6B00'], introLine:'皮卡皮卡——！' , portrait: './assets/heroes/pikachu.png' },
+    charmander: { name:'小火龙', gender:'男', role:'火焰', emoji:'🔥', projectile:'charmander',colors:['#F5C518','#E84118','#FF6B00'], introLine:'小火龙，燃烧吧！' , portrait: './assets/heroes/charmander.png' },
+    bulbasaur:  { name:'妙蛙种子',gender:'女', role:'草系', emoji:'🌿', projectile:'bulbasaur', colors:['#68D391','#48BB78','#9F7AEA'], introLine:'妙蛙种子～种籽！' , portrait: './assets/heroes/bulbasaur.png' },
+    squirtle:   { name:'杰尼龟', gender:'男', role:'水系', emoji:'💧', projectile:'squirtle',  colors:['#63B3ED','#4299E1','#90CDF4'], introLine:'杰尼杰尼！' , portrait: './assets/heroes/squirtle.png' },
+    mewtwo:     { name:'超梦',   gender:'男', role:'幻兽', emoji:'🔮', projectile:'mewtwo',    colors:['#E9D8FD','#D6BCFA','#FBB6CE'], introLine:'我即是梦……超越现实的存在！' , portrait: './assets/heroes/mewtwo.png' },
+    alakazam:   { name:'胡地',   gender:'男', role:'超能', emoji:'🥄', projectile:'alakazam',  colors:['#FAE1B7','#F6AD55','#ED8936'], introLine:'勺子在旋转……心在波动！' , portrait: './assets/heroes/alakazam.png' },
+    gardevoir:  { name:'沙奈朵', gender:'女', role:'妖精', emoji:'✨', projectile:'gardevoir', colors:['#FED7D7','#FEB2B2','#FC8181'], introLine:'以心灵之力，守护同伴！' , portrait: './assets/heroes/gardevoir.png' },
+    dragonite:  { name:'快龙',   gender:'男', role:'龙系', emoji:'🐉', projectile:'dragonite', colors:['#FECC5B','#F6AD55','#DD6B20'], introLine:'呜呜——龙啸九天！' , portrait: './assets/heroes/dragonite.png' },
+    snorlax:    { name:'卡比兽', gender:'男', role:'重量', emoji:'💤', projectile:'snorlax',   colors:['#9F7AEA','#805AD5','#6B46C1'], introLine:'呼噜噜……让开……我要睡觉……' , portrait: './assets/heroes/snorlax.png' },
+    lucario:    { name:'路卡利欧',gender:'男', role:'波导', emoji:'🌀', projectile:'lucario', colors:['#4A5568','#2D3748','#63B3ED'], introLine:'波导之力，觉醒吧！' , portrait: './assets/heroes/lucario.png' },
+    mew:        { name:'梦幻',   gender:'中性',role:'幻形', emoji:'🌈', projectile:'mew',       colors:['#FBB6CE','#FC8181','#ED64A6'], introLine:'我是梦幻……什么都能变身哦～' , portrait: './assets/heroes/mew.png' },
+    eevee:      { name:'伊布',   gender:'中性',role:'进化', emoji:'🍀', projectile:'eevee',     colors:['#D69E2E','#B7791F','#F6E05E'], introLine:'伊布伊布～接下来会进化成什么样呢？' , portrait: './assets/heroes/eevee.png' }
 };
 
 // 宝可梦外部图片 URL（Agnes Image API 生成）
